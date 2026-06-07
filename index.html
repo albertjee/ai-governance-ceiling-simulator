@@ -322,29 +322,38 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 12px;
       margin-bottom: 14px;
     }
 
     .diagnostic-note {
+      flex: 1 1 360px;
       margin: 0;
       color: var(--muted);
       font-size: 0.82rem;
       line-height: 1.45;
     }
 
+    .diagnostic-actions .reset-button {
+      flex: 0 0 auto;
+      max-width: 100%;
+      text-align: center;
+    }
+
     .scoring-trace {
-      max-height: 520px;
+      max-height: 400px;
       margin: 0;
       overflow: auto;
-      padding: 16px;
+      padding: 14px 16px;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
-      background: rgba(0, 0, 0, 0.34);
-      color: #dce3ee;
-      font: 0.78rem/1.55 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      background: rgba(0, 0, 0, 0.26);
+      color: #cfd7e3;
+      font: 0.76rem/1.5 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
       tab-size: 2;
       white-space: pre;
+      scrollbar-color: rgba(201, 166, 70, 0.5) rgba(0, 0, 0, 0.22);
     }
 
     .toggle-name {
@@ -412,8 +421,12 @@
 
     .domain-chart {
       display: grid;
-      gap: 14px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.16);
     }
 
     .chart-meta {
@@ -421,6 +434,7 @@
       grid-template-columns: minmax(150px, 210px) minmax(0, 1fr) 54px;
       gap: 12px;
       align-items: center;
+      padding-bottom: 4px;
     }
 
     .final-score-label {
@@ -437,6 +451,7 @@
       grid-template-columns: minmax(150px, 210px) minmax(0, 1fr) 54px;
       gap: 12px;
       align-items: center;
+      min-height: 28px;
     }
 
     .domain-name {
@@ -452,11 +467,11 @@
 
     .bar-track {
       position: relative;
-      height: 18px;
+      height: 20px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.34);
+      background: rgba(0, 0, 0, 0.42);
     }
 
     .bar-fill {
@@ -466,6 +481,7 @@
       border-radius: inherit;
       background: linear-gradient(90deg, rgba(201, 166, 70, 0.68), var(--gold-soft));
       transition: width 180ms ease;
+      z-index: 1;
     }
 
     .bar-fill.weakest {
@@ -477,15 +493,18 @@
       top: -2px;
       bottom: -2px;
       width: 1px;
-      background: rgba(246, 247, 251, 0.2);
+      background: rgba(246, 247, 251, 0.3);
+      z-index: 2;
     }
 
     .final-marker {
       position: absolute;
-      top: -4px;
-      bottom: -4px;
+      top: 0;
+      bottom: 0;
       width: 2px;
       background: var(--gold-soft);
+      box-shadow: 0 0 0 1px rgba(6, 8, 13, 0.72), 0 0 8px rgba(240, 211, 125, 0.5);
+      z-index: 3;
     }
 
     .domain-value {
@@ -504,6 +523,7 @@
       font-size: 0.74rem;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
+      padding-bottom: 2px;
     }
 
     .axis-scale {
@@ -686,16 +706,68 @@
       .chart-meta,
       .domain-row,
       .chart-axis {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(108px, 0.9fr) minmax(110px, 1.5fr) 44px;
         gap: 8px;
       }
 
       .final-score-label {
-        justify-self: start;
+        justify-self: end;
       }
 
       .domain-value {
-        text-align: left;
+        text-align: right;
+      }
+
+      .domain-chart {
+        padding: 12px;
+      }
+
+      .diagnostic-actions {
+        align-items: stretch;
+      }
+
+      .diagnostic-actions .reset-button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 14px;
+      }
+
+      .results-grid,
+      .controls {
+        padding-right: 14px;
+        padding-left: 14px;
+      }
+
+      .domain-chart {
+        margin-right: -2px;
+        margin-left: -2px;
+        padding: 10px;
+      }
+
+      .chart-meta,
+      .domain-row,
+      .chart-axis {
+        grid-template-columns: minmax(86px, 1fr) minmax(76px, 1.25fr) 34px;
+        gap: 6px;
+      }
+
+      .domain-name,
+      .domain-value {
+        font-size: 0.8rem;
+      }
+
+      .chart-axis {
+        font-size: 0.66rem;
+      }
+
+      .scoring-trace {
+        max-height: 360px;
+        padding: 12px;
+        font-size: 0.72rem;
       }
     }
   </style>
@@ -823,7 +895,7 @@
 
           <div class="metric full">
             <p class="metric-label">Domain Maturity Profile</p>
-            <p class="metric-detail">Live view of current domain maturity inputs after improvements are applied.</p>
+            <p class="metric-detail">Shows adjusted domain maturity after selected improvements, with the final capped score shown as a vertical reference marker.</p>
             <div class="domain-chart" id="domainChart" aria-label="Domain maturity profile bar chart"></div>
             <div class="domain-summary">
               <span>Weakest domain: <strong id="weakestDomain">Governance</strong></span>
@@ -834,7 +906,7 @@
           <div class="metric full">
             <p class="metric-label">Scoring Trace</p>
             <div class="diagnostic-actions">
-              <p class="diagnostic-note">Diagnostic view of inputs, adjustments, penalties, caps, and ranked outputs.</p>
+              <p class="diagnostic-note">QA diagnostic showing the current inputs, applied adjustments, intermediate scores, caps, blockers, and graph state. Scroll to review the full JSON or export it for analysis.</p>
               <button class="reset-button" id="exportJson" type="button">Export Scoring Trace JSON</button>
             </div>
             <pre class="scoring-trace" id="scoringTrace" aria-label="Scoring trace" aria-live="off"></pre>
@@ -842,7 +914,7 @@
         </div>
       </section>
     </div>
-    <p class="footer-note">Scores are rounded to two decimals. The model intentionally weights governance, evidence, NHI lifecycle, and traceability because those areas commonly determine whether AI security capability is defensible in executive review.</p>
+    <p class="footer-note">Displayed scores are rounded to two decimals. Governance, evidence, NHI lifecycle, and traceability are intentionally emphasized because they commonly determine whether AI security capability is defensible in executive review.</p>
     <footer class="site-footer">
       <p>Created by <span class="accent">Albert Jee</span> | IAM Consultant &amp; Former Microsoft FastTrack Architect</p>
       <p>&copy; 2026 Albert Jee. All rights reserved.</p>
