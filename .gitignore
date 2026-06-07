@@ -1,0 +1,20 @@
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+# Editor folders
+.vscode/
+.idea/
+# Temp / backup files
+*.tmp
+*.bak
+*.old
+*.orig
+~$*
+# Logs
+*.log
+# Exported diagnostics / generated local artifacts
+ai-governance-scoring-trace-*.json
+# Optional local scratch
+scratch/
+tmp/
