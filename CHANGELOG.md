@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.5 - 2026-06-07
+
+- Added scoring trace diagnostic panel.
+- Added JSON scoring export.
+- Added browser console scoring diagnostic.
+- Added global diagnostic interfaces.
+- Added Domain Maturity Profile graph polish.
+- Improved mobile graph layout.
+- Improved scoring trace readability.
+- Preserved the static, no-backend, no-telemetry, no-storage, and no-network design.
+- Preserved scoring formulas.
+- No scoring formulas were changed in the Pass #2 UI/graph polish.
+
 ## 0.1.2 - 2026-06-03
 
 - Clarified the result label from Governance-capped score to Final capped score.
