@@ -342,7 +342,7 @@
     }
 
     .scoring-trace {
-      max-height: 400px;
+      max-height: 500px;
       margin: 0;
       overflow: auto;
       padding: 14px 16px;
@@ -468,7 +468,6 @@
     .bar-track {
       position: relative;
       height: 20px;
-      overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 999px;
       background: rgba(0, 0, 0, 0.42);
@@ -478,7 +477,7 @@
       position: absolute;
       inset: 0 auto 0 0;
       width: 0%;
-      border-radius: inherit;
+      border-radius: 999px;
       background: linear-gradient(90deg, rgba(201, 166, 70, 0.68), var(--gold-soft));
       transition: width 180ms ease;
       z-index: 1;
@@ -503,7 +502,7 @@
       bottom: 0;
       width: 2px;
       background: var(--gold-soft);
-      box-shadow: 0 0 0 1px rgba(6, 8, 13, 0.72), 0 0 8px rgba(240, 211, 125, 0.5);
+      filter: drop-shadow(0 0 8px rgba(240, 211, 125, 0.5));
       z-index: 3;
     }
 
@@ -1049,20 +1048,25 @@
       return domains.reduce((sum, domain) => sum + values[domain.id] * domain.weight, 0);
     }
 
-    function calculate() {
-      const values = adjustedDomains();
-      const rawCapability = (scoreFor(values) * 0.72) + (state.starting * 0.28);
-      const evidencePenalty = Math.max(0, 2.75 - values.evidence) * 0.18;
-      const tracePenalty = Math.max(0, 2.6 - values.logging) * 0.1;
+    function capsFor(values, rawCapability, evidencePenalty, tracePenalty) {
       const evidenceAdjusted = clamp(rawCapability - evidencePenalty - tracePenalty, 1, 5);
       const governanceCap = clamp(values.governance + 1.0, 1.55, 5);
       const nhiCap = clamp(values.nhi + 1.04, 1.75, 5);
       const traceCap = clamp(values.logging + 1.12, 1.75, 5);
       const capped = Math.min(evidenceAdjusted, governanceCap, nhiCap, traceCap);
+      return { evidenceAdjusted, governanceCap, nhiCap, traceCap, capped };
+    }
+
+    function calculate() {
+      const values = adjustedDomains();
+      const rawCapability = (scoreFor(values) * 0.72) + (state.starting * 0.28);
+      const evidencePenalty = Math.max(0, 2.75 - values.evidence) * 0.18;
+      const tracePenalty = Math.max(0, 2.6 - values.logging) * 0.1;
+      const { evidenceAdjusted, governanceCap, nhiCap, traceCap, capped } = capsFor(values, rawCapability, evidencePenalty, tracePenalty);
       const blockers = [
         { label: "Governance", value: values.governance, unlock: "Assign named AI risk ownership", detail: "Ownership and council cadence raise the governance cap." },
         { label: "Evidence Confidence", value: values.evidence, unlock: "Create an AI risk register", detail: "Evidence confidence reduces the discount applied to capability claims." },
-        { label: "NHI Lifecycle", value: values.nhi, unlock: "Map NHI owners and maintain AI agent inventory", detail: "NHI lifecycle maturity limits defensibility for autonomous and agentic AI." },
+        { label: "NHI Lifecycle", value: values.nhi, unlock: "Map NHI owners and maintain AI agent inventory", detail: "NHI lifecycle limits defensibility for autonomous and agentic AI." },
         { label: "Logging / Traceability", value: values.logging, unlock: "Add SIEM/logging evidence", detail: "Traceability makes AI control operation visible and reviewable." },
         { label: "Technical Capability", value: values.technical, unlock: "Test the AI incident-response playbook", detail: "Response practice raises operational readiness." }
       ].sort((a, b) => a.value - b.value);
@@ -1076,13 +1080,7 @@
           const nextRaw = (scoreFor(nextValues) * 0.72) + (state.starting * 0.28);
           const nextEvidencePenalty = Math.max(0, 2.75 - nextValues.evidence) * 0.18;
           const nextTracePenalty = Math.max(0, 2.6 - nextValues.logging) * 0.1;
-          const nextEvidenceAdjusted = clamp(nextRaw - nextEvidencePenalty - nextTracePenalty, 1, 5);
-          const nextCapped = Math.min(
-            nextEvidenceAdjusted,
-            clamp(nextValues.governance + 1.0, 1.55, 5),
-            clamp(nextValues.nhi + 1.04, 1.75, 5),
-            clamp(nextValues.logging + 1.12, 1.75, 5)
-          );
+          const { capped: nextCapped } = capsFor(nextValues, nextRaw, nextEvidencePenalty, nextTracePenalty);
           state.improvements[item.id] = false;
           return { label: item.label, gain: Math.max(0, nextCapped - capped) };
         })
