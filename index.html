@@ -1072,7 +1072,7 @@
         </p>
         <p>&copy; 2026 Albert Jee. All rights reserved.</p>
         <p>
-          AI Security Governance Ceiling Simulator v1.5 | Public heuristic
+          AI Security Governance Ceiling Simulator Rev2 | Public heuristic
           simulator
         </p>
         <p>
@@ -1507,12 +1507,12 @@
 
         const diagnostic = {
           schemaVersion: "1.0",
-          simulatorVersion: "v1.5",
+          simulatorVersion: "Rev2",
           exportType: "Scoring System Diagnostic Export",
           generatedUtc,
           metadata: {
             simulatorName: "AI Security Governance Ceiling Simulator",
-            simulatorVersion: "v1.5",
+            simulatorVersion: "Rev2",
             exportType: "Scoring System Diagnostic Export",
             generatedUtc,
             scoringModelType: "Public heuristic simulator",
@@ -1761,7 +1761,7 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `ai-governance-scoring-trace-v1.5-${filenameUtc}.json`;
+        link.download = `ai-governance-scoring-trace-Rev2-${filenameUtc}.json`;
         document.body.appendChild(link);
         link.click();
         link.remove();

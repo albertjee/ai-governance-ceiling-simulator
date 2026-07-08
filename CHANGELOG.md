@@ -1,5 +1,18 @@
 # Changelog
 
+## Rev2 - 2026-07-07
+
+- Revamped color palette: midnight blue-black base with champagne gold accents.
+- Added Geist Sans typography (system-optimized, no CDN dependency).
+- Added CSS motion system: `--ease-smooth` and `--duration-base` variables for 320ms transitions.
+- Polished toggle switches: larger, smoother, champagne gold accents.
+- Added button hover glow and lift effect.
+- Refined domain chart: deeper background, gold border accent, enhanced bar gradient.
+- Tightened spacing across calibration cards, stage cards, metrics, and status cards.
+- Added `border-left` accent on stage calibration cards with smooth transition.
+- Updated focus rings across all interactive elements to use champagne gold.
+- All scoring formulas and features preserved. All three lint gates pass.
+
 ## v1.5 - 2026-06-07
 
 - Added scoring trace diagnostic panel.
