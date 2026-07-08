@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.50-xss-hardening - 2026-07-08 (branch: community-preview-1.5x-xss-hardening)
+
+- Added a Content-Security-Policy meta tag to both `index.html` and `Guide.html`. `index.html` uses `script-src 'self' 'unsafe-inline'` (required since the app's logic is one inline `<script>` block with no build step); `Guide.html` uses the stricter `script-src 'none'` since it has zero scripts by design.
+- Tightened the Guide iframe sandbox from `sandbox="allow-same-origin"` to `sandbox=""` (fully opaque origin, no script execution, no forms, no top navigation) — defense-in-depth against any future script added to `Guide.html`.
+- `frame-ancestors` deliberately excluded from the CSP meta tag (spec-ignored via `<meta>`, same as `frame-src`); documented as a server-config item for whenever real HTTP headers become available, with a note that `Guide.html` needs `frame-ancestors 'self'` (not `'none'`) to avoid breaking its own embedding by `index.html`.
+- Full corrected plan and rationale in `docs/XSS-Hardening-Plan.md`, including a record of two bugs caught in Claude's review of Claude Code's original draft before implementation: (1) the original `script-src 'self'` with no `'unsafe-inline'` would have blocked the app's own inline script from running at all; (2) the original fix for the iframe sandbox (deleting the attribute) would have removed all sandbox restrictions instead of tightening them.
+- No scoring formulas changed, no build step added, no dependencies added. Verified via extracted-script `node --check`, tag-balance check, and manual confirmation of CSP/sandbox values in both files.
+- This branch merges into `community-preview-1.5x` only, not into `main`.
+
 ## v1.50 - Community Preview - 2026-07-08 (branch: community-preview-1.5x)
 
 - Removed the Scoring Trace panel and `Export Scoring Trace JSON` button from the visible GUI. The underlying diagnostic computation, `console.table`/`console.log` output, and `window.getScoringDiagnostic()` / `window.downloadScoringDiagnostic()` / `window.AI_GOVERNANCE_SIMULATOR_SCORE_TRACE` globals all remain fully functional from the browser console.
