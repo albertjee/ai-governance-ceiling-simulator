@@ -7,7 +7,7 @@
 
 **Type:** Single-page browser app (pure HTML + embedded CSS/JS, no dependencies)
 **Entry point:** `index.html`
-**External resources:** Chart.js CDN only
+**External resources:** None — fully self-contained, no CDN dependencies (the domain profile chart is hand-built with plain divs, not a charting library)
 
 ---
 

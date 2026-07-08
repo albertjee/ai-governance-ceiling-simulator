@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.50 - Community Preview - 2026-07-08 (branch: community-preview-1.5x)
+
+- Removed the Scoring Trace panel and `Export Scoring Trace JSON` button from the visible GUI. The underlying diagnostic computation, `console.table`/`console.log` output, and `window.getScoringDiagnostic()` / `window.downloadScoringDiagnostic()` / `window.AI_GOVERNANCE_SIMULATOR_SCORE_TRACE` globals all remain fully functional from the browser console.
+- Added a new `Open Guide` button in the results panel (same slot the Scoring Trace panel occupied) that toggles an in-page iframe loading the new `Guide.html`.
+- Added `Guide.html` — a plain-language, publicly-oriented operating guide, styled to match the app, separate from the developer-facing `README.md`.
+- Relabeled the simulator version from `Rev2` to `v1.50 — Community Preview` in the footer and in all scoring-trace JSON diagnostic fields (`simulatorVersion`, exported filename).
+- Fixed a stale `CLAUDE.md` line claiming Chart.js CDN as a dependency; confirmed no Chart.js reference exists anywhere in `index.html` — the domain chart is hand-built.
+- Updated `README.md` to reflect the removed panel/button and the new Guide button.
+- No scoring formulas changed. This branch intentionally diverges from `main`/`master`, which remains the active development line.
+
 ## Rev2 - 2026-07-07
 
 - Revamped color palette: midnight blue-black base with champagne gold accents.

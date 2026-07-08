@@ -414,6 +414,18 @@
         scrollbar-color: rgba(201, 166, 70, 0.5) rgba(0, 0, 0, 0.22);
       }
 
+      .guide-frame {
+        width: 100%;
+        height: 480px;
+        margin-top: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+      }
+
+      .guide-frame[hidden] {
+        display: none;
+      }
+
       .toggle-name {
         color: var(--text);
         font-size: 0.92rem;
@@ -1038,23 +1050,31 @@
             </div>
 
             <div class="metric full">
-              <p class="metric-label">Scoring Trace</p>
+              <p class="metric-label">Guide</p>
               <div class="diagnostic-actions">
                 <p class="diagnostic-note">
-                  QA diagnostic showing the current inputs, applied adjustments,
-                  intermediate scores, caps, blockers, and graph state. Scroll
-                  to review the full JSON or export it for analysis.
+                  Need help using the simulator? Open the guide for
+                  instructions on calibrating your starting estimate,
+                  adjusting domain sliders, and reading the results.
                 </p>
-                <button class="reset-button" id="exportJson" type="button">
-                  Export Scoring Trace JSON
+                <button
+                  class="reset-button"
+                  id="toggleGuide"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="guideFrame"
+                >
+                  Open Guide
                 </button>
               </div>
-              <pre
-                class="scoring-trace"
-                id="scoringTrace"
-                aria-label="Scoring trace"
-                aria-live="off"
-              ></pre>
+              <iframe
+                id="guideFrame"
+                class="guide-frame"
+                src="Guide.html"
+                title="Simulator guide"
+                sandbox="allow-same-origin"
+                hidden
+              ></iframe>
             </div>
           </div>
         </section>
@@ -1072,8 +1092,8 @@
         </p>
         <p>&copy; 2026 Albert Jee. All rights reserved.</p>
         <p>
-          AI Security Governance Ceiling Simulator Rev2 | Public heuristic
-          simulator
+          AI Security Governance Ceiling Simulator v1.50 — Community Preview |
+          Public heuristic simulator
         </p>
         <p>
           Not affiliated with, endorsed by, or representative of SANS,
@@ -1249,9 +1269,17 @@
         document
           .querySelector("#resetBaseline")
           .addEventListener("click", resetToBaseline);
-        document
-          .querySelector("#exportJson")
-          .addEventListener("click", downloadScoringDiagnostic);
+
+        const guideButton = document.querySelector("#toggleGuide");
+        const guideFrame = document.querySelector("#guideFrame");
+        if (guideButton && guideFrame) {
+          guideButton.addEventListener("click", () => {
+            const opening = guideFrame.hidden;
+            guideFrame.hidden = !opening;
+            guideButton.setAttribute("aria-expanded", String(opening));
+            guideButton.textContent = opening ? "Close Guide" : "Open Guide";
+          });
+        }
       }
 
       function resetToBaseline() {
@@ -1507,12 +1535,12 @@
 
         const diagnostic = {
           schemaVersion: "1.0",
-          simulatorVersion: "Rev2",
+          simulatorVersion: "v1.50 — Community Preview",
           exportType: "Scoring System Diagnostic Export",
           generatedUtc,
           metadata: {
             simulatorName: "AI Security Governance Ceiling Simulator",
-            simulatorVersion: "Rev2",
+            simulatorVersion: "v1.50 — Community Preview",
             exportType: "Scoring System Diagnostic Export",
             generatedUtc,
             scoringModelType: "Public heuristic simulator",
@@ -1727,11 +1755,14 @@
         currentScoringDiagnostic = deepFreeze(
           scoringTraceFor(result, inputSnapshot),
         );
-        document.querySelector("#scoringTrace").textContent = JSON.stringify(
-          currentScoringDiagnostic,
-          null,
-          2,
-        );
+        const scoringTraceEl = document.querySelector("#scoringTrace");
+        if (scoringTraceEl) {
+          scoringTraceEl.textContent = JSON.stringify(
+            currentScoringDiagnostic,
+            null,
+            2,
+          );
+        }
         // Diagnostic scoring trace only. Do not use this block to change scoring behavior.
         console.table(currentScoringDiagnostic.intermediateScores);
         console.table(currentScoringDiagnostic.ceilingCaps);
@@ -1761,7 +1792,7 @@
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = `ai-governance-scoring-trace-Rev2-${filenameUtc}.json`;
+        link.download = `ai-governance-scoring-trace-v1.50-community-preview-${filenameUtc}.json`;
         document.body.appendChild(link);
         link.click();
         link.remove();

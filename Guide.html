@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Guide — AI Security Governance Ceiling Simulator</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0d1424;
+        --text: #f0f2f8;
+        --muted: #b7bfcd;
+        --gold: #b8960e;
+        --gold-soft: #e8c84a;
+        --line: #263156;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Geist Sans",
+          Geist,
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      body {
+        padding: 20px 24px 28px;
+        line-height: 1.55;
+        font-size: 0.94rem;
+      }
+
+      h1 {
+        margin: 0 0 6px;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--text);
+      }
+
+      p.lead {
+        margin: 0 0 20px;
+        color: var(--muted);
+      }
+
+      h2 {
+        margin: 22px 0 8px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--gold-soft);
+      }
+
+      h2:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      p,
+      li {
+        color: var(--text);
+      }
+
+      ul {
+        margin: 6px 0 0;
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      strong {
+        color: var(--gold-soft);
+      }
+
+      .disclaimer {
+        margin-top: 24px;
+        padding: 12px 14px;
+        border: 1px solid rgba(184, 150, 14, 0.4);
+        background: rgba(184, 150, 14, 0.08);
+        border-radius: 8px;
+        color: var(--gold-soft);
+        font-size: 0.86rem;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>How to Use This Simulator</h1>
+    <p class="lead">
+      This is a quick walkthrough of every control and result on the page.
+      No account, install, or internet connection is required — everything
+      runs locally in your browser.
+    </p>
+
+    <h2>1. Pick a starting estimate</h2>
+    <p>
+      The five cards at the top describe five stages of AI governance
+      maturity, from <strong>Stage 1 — Ad Hoc</strong> (informal, no clear
+      ownership) to <strong>Stage 5 — Adaptive / Optimizing</strong>
+      (continuously improved and deeply evidenced). Read through them and use
+      the <strong>Starting maturity estimate</strong> slider to set the number
+      that best matches where your organization sits today. Most
+      organizations land somewhere between two stages, and that's fine —
+      the slider moves in small steps for exactly that reason.
+    </p>
+
+    <h2>2. Adjust the five maturity domains</h2>
+    <p>
+      Below the starting estimate are five sliders, one per area. Move each
+      one to reflect your honest assessment:
+    </p>
+    <ul>
+      <li>
+        <strong>Governance</strong> — policy, ownership, and oversight of AI
+        use.
+      </li>
+      <li>
+        <strong>Technical Capability</strong> — how mature your actual AI
+        tooling and response practices are.
+      </li>
+      <li>
+        <strong>Evidence Confidence</strong> — how much of your governance
+        claims you could actually prove with documentation.
+      </li>
+      <li>
+        <strong>NHI Lifecycle</strong> — how well you manage
+        <em>non-human identities</em> (service accounts, API keys, and AI
+        agents) from creation to retirement.
+      </li>
+      <li>
+        <strong>Logging / Traceability</strong> — whether AI activity is
+        actually logged and reviewable after the fact.
+      </li>
+    </ul>
+
+    <h2>3. Try improvements</h2>
+    <p>
+      Each toggle represents one concrete control you could put in place —
+      things like naming an AI risk owner or adding SIEM logging evidence.
+      Flip a few on and watch how the results shift. This is meant to help
+      you see which single change would move your score the most.
+    </p>
+
+    <h2>4. Read the results</h2>
+    <p>The right-hand panel updates instantly as you move things:</p>
+    <ul>
+      <li>
+        <strong>Raw capability score</strong> — your inputs combined, before
+        any discounting.
+      </li>
+      <li>
+        <strong>Evidence-adjusted score</strong> — the raw score after a
+        penalty for weak evidence or logging.
+      </li>
+      <li>
+        <strong>Final capped score</strong> — the number that actually
+        counts. It can be held down — "capped" — by governance, NHI
+        lifecycle, or logging maturity even if your raw score is higher.
+      </li>
+      <li>
+        <strong>Governance Ceiling status</strong> — tells you plainly
+        whether something is currently holding your score back.
+      </li>
+      <li>
+        <strong>Primary blocker</strong> and <strong>Next unlock</strong> —
+        your weakest domain right now, and the single most direct way to
+        raise it.
+      </li>
+      <li>
+        <strong>What moves the score most?</strong> — the top three
+        improvements, ranked by estimated impact, based on your current
+        settings.
+      </li>
+      <li>
+        <strong>Domain Maturity Profile</strong> — a bar for each of the
+        five domains, with a vertical marker showing where your final capped
+        score sits relative to all of them.
+      </li>
+    </ul>
+
+    <h2>5. Start over anytime</h2>
+    <p>
+      The <strong>Reset to baseline</strong> button restores every slider and
+      toggle to its default value, so you can always get back to a clean
+      starting point.
+    </p>
+
+    <p class="disclaimer">
+      This is a heuristic what-if model for exploration and discussion. It is
+      not an official SANS score, not Microsoft Secure Score, not a
+      compliance score, and not an evidence-based assessment of any real
+      tenant. It is not affiliated with, endorsed by, or representative of
+      SANS, Microsoft, or Microsoft Secure Score.
+    </p>
+  </body>
+</html>

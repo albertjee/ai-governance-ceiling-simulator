@@ -2,7 +2,7 @@
 
 A dependency-free, browser-based what-if simulator for exploring how AI security governance maturity can cap practical capability scores.
 
-Version: v1.5
+Version: v1.50 — Community Preview
 
 Open `index.html` in a browser to use the app. It runs entirely in the page with embedded HTML, CSS, and JavaScript.
 
@@ -15,9 +15,9 @@ Open `index.html` in a browser to use the app. It runs entirely in the page with
 - Reset to baseline control for restoring default sliders and clearing improvements
 - Results for raw score, evidence-adjusted score, final capped score, blocker, next unlock, and highest-impact improvements
 - Domain Maturity Profile graph with five adjusted domain bars, a final capped score vertical reference marker, and weakest/strongest domain summary
-- Scoring Trace panel with an `Export Scoring Trace JSON` button
-- Browser console scoring diagnostic
-- Global diagnostic interfaces:
+- An in-page `Guide.html` viewer, opened via an `Open Guide` button in the results panel, with plain-language operating instructions for public users
+- Browser console scoring diagnostic (the Scoring Trace panel and `Export Scoring Trace JSON` button are not shown in this Community Preview build, but the underlying diagnostic still runs — see below)
+- Global diagnostic interfaces, available from the browser console:
   - `window.AI_GOVERNANCE_SIMULATOR_SCORE_TRACE`
   - `window.getScoringDiagnostic()`
   - `window.downloadScoringDiagnostic()`
@@ -30,8 +30,8 @@ This project remains a static, single-file HTML/CSS/JavaScript application. It i
 
 1. Open `index.html` directly in a browser.
 2. Adjust the maturity sliders and improvement toggles.
-3. Use `Export Scoring Trace JSON` to save the current scoring diagnostic.
-4. Open the browser DevTools console to inspect scoring trace output.
+3. Use the `Open Guide` button in the results panel for plain-language instructions.
+4. Open the browser DevTools console and run `downloadScoringDiagnostic()` to save the current scoring diagnostic as JSON, or inspect `window.AI_GOVERNANCE_SIMULATOR_SCORE_TRACE` directly.
 
 ## Scoring Transparency
 
@@ -66,9 +66,9 @@ See `SCORING-METHODOLOGY.md` for the canonical scoring reference, including form
 - Confirm the disclaimer is visible.
 - Confirm the Domain Maturity Profile shows five adjusted domain bars and the final capped score as a vertical marker.
 - Confirm the weakest/strongest domain summary updates.
-- Confirm the Scoring Trace panel updates and remains scrollable.
-- Confirm `Export Scoring Trace JSON` downloads the current scoring diagnostic.
-- Confirm the browser console scoring diagnostic and global diagnostic interfaces remain available.
+- Confirm the `Open Guide` button opens `Guide.html` in place and the button relabels to `Close Guide`; confirm `Close Guide` hides it again.
+- Confirm the Scoring Trace panel and its export button are not visibly present in the GUI.
+- Confirm the browser console scoring diagnostic still logs on every change, and that `window.getScoringDiagnostic()` / `window.downloadScoringDiagnostic()` / `window.AI_GOVERNANCE_SIMULATOR_SCORE_TRACE` all remain available and functional from DevTools.
 - Confirm no network calls, telemetry, local storage, or external dependencies are used.
 - Resize the page to desktop and narrow/mobile width and confirm it remains usable.
 
