@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.50-xss-hardening - 2026-07-08 (branch: community-preview-1.5x-xss-hardening)
+## v1.51 - Community Preview - XSS Hardened - 2026-07-08 (branch: community-preview-1.5x) [MERGED]
 
 - Added a Content-Security-Policy meta tag to both `index.html` and `Guide.html`. `index.html` uses `script-src 'self' 'unsafe-inline'` (required since the app's logic is one inline `<script>` block with no build step); `Guide.html` uses the stricter `script-src 'none'` since it has zero scripts by design.
 - Tightened the Guide iframe sandbox from `sandbox="allow-same-origin"` to `sandbox=""` (fully opaque origin, no script execution, no forms, no top navigation) — defense-in-depth against any future script added to `Guide.html`.
